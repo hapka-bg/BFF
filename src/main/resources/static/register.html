@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register - Hapka</title>
+    <link rel="stylesheet" href="/css/register.css" />
+</head>
+<body>
+<div class="background">
+    <span class="dot" style="--i:0; --x:10vw; --y:20vh; --size:12px;"></span>
+    <span class="dot" style="--i:1; --x:80vw; --y:10vh; --size:10px;"></span>
+    <span class="dot" style="--i:2; --x:40vw; --y:80vh; --size:14px;"></span>
+    <span class="dot" style="--i:3; --x:70vw; --y:60vh; --size:8px;"></span>
+    <span class="dot" style="--i:4; --x:25vw; --y:50vh; --size:11px;"></span>
+    <span class="dot" style="--i:5; --x:90vw; --y:75vh; --size:9px;"></span>
+    <span class="dot" style="--i:6; --x:15vw; --y:75vh; --size:12px;"></span>
+    <span class="dot" style="--i:7; --x:50vw; --y:25vh; --size:13px;"></span>
+    <span class="dot" style="--i:8; --x:30vw; --y:15vh; --size:10px;"></span>
+    <span class="dot" style="--i:9; --x:85vw; --y:45vh; --size:14px;"></span>
+</div>
+<main class="container">
+    <h1>Create Account</h1>
+    <form id="register-form"  novalidate>
+        <div class="form-group">
+            <label for="firstName">Name</label>
+            <input type="text" id="firstName" name="firstName" required autocomplete="given-name" />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required autocomplete="family-name" />
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" pattern="^\+?[0-9\s\-]{7,15}$" placeholder="+359..." required autocomplete="tel" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+        </div>
+        <div class="form-group last-input">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" minlength="8" required autocomplete="new-password" />
+        </div>
+        <button type="submit" class="btn submit-btn">Register</button>
+    </form>
+    <button class="btn back-btn" type="button" onclick="window.location.href='index.html'">Back to Home</button>
+</main>
+<script src="/js/register.js"></script>
+</body>
+</html>

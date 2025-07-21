@@ -1,0 +1,139 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background: linear-gradient(135deg, #d6eaf8, #eef6fb);
+}
+
+/* Background with multiple animated floating dots */
+.background {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.dot {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    width: var(--size);
+    height: var(--size);
+    background: rgba(255 255 255 / 0.5);
+    border-radius: 50%;
+    box-shadow:
+            0 0 8px rgba(255 255 255 / 0.8),
+            0 0 15px rgba(255 255 255 / 0.6);
+    animation: floatUpDown 6s ease-in-out var(--i) infinite alternate;
+    animation-delay: calc(var(--i) * -0.5s);
+}
+
+@keyframes floatUpDown {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(-15px) translateX(5px);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.5;
+    }
+}
+
+/* Container styling - shorter panel */
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: rgba(255 255 255 / 0.9);
+    border-radius: 14px;
+    padding: 40px 30px;
+    margin: 60px auto 60px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    color: #333333;
+}
+
+/* Use flexbox to center container vertically and horizontally */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Headings */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #1a3c6e;
+}
+
+/* Site name and motto container */
+.site-info {
+    margin-bottom: 30px;
+}
+
+.site-info p {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #5b7ba8;
+}
+
+/* Button group */
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Base button */
+.btn {
+    flex: 1;
+    padding: 15px 0;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    user-select: none;
+    color: white;
+    text-decoration: none;
+}
+
+/* Login button pastel teal gradient */
+.login-btn {
+    background: linear-gradient(45deg, #81e6d9, #319795);
+    color: #04332a;
+}
+
+.login-btn:hover,
+.login-btn:focus {
+    background: linear-gradient(45deg, #319795, #81e6d9);
+    box-shadow: 0 8px 25px rgba(49, 151, 149, 0.5);
+    outline: none;
+}
+
+/* Register button pastel coral gradient */
+.register-btn {
+    background: linear-gradient(45deg, #fbb6ce, #f56565);
+    color: #570000;
+}
+
+.register-btn:hover,
+.register-btn:focus {
+    background: linear-gradient(45deg, #f56565, #fbb6ce);
+    box-shadow: 0 8px 25px rgba(245, 101, 101, 0.5);
+    outline: none;
+}

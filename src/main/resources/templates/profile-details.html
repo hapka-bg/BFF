@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Almost done - Hapka</title>
+    <link rel="stylesheet" href="/css/profile-details.css" />
+</head>
+<body>
+<div class="background">
+    <span class="dot" style="--i:0; --x:10vw; --y:20vh; --size:12px;"></span>
+    <span class="dot" style="--i:1; --x:80vw; --y:10vh; --size:10px;"></span>
+    <span class="dot" style="--i:2; --x:40vw; --y:80vh; --size:14px;"></span>
+    <span class="dot" style="--i:3; --x:70vw; --y:60vh; --size:8px;"></span>
+    <span class="dot" style="--i:4; --x:25vw; --y:50vh; --size:11px;"></span>
+    <span class="dot" style="--i:5; --x:90vw; --y:75vh; --size:9px;"></span>
+    <span class="dot" style="--i:6; --x:15vw; --y:75vh; --size:12px;"></span>
+    <span class="dot" style="--i:7; --x:50vw; --y:25vh; --size:13px;"></span>
+    <span class="dot" style="--i:8; --x:30vw; --y:15vh; --size:10px;"></span>
+    <span class="dot" style="--i:9; --x:85vw; --y:45vh; --size:14px;"></span>
+</div>
+<main class="container">
+    <h1>You are almost done</h1>
+    <form id="details-form" novalidate>
+        <div class="form-group">
+            <label for="street">Street Address</label>
+            <input
+                    type="text"
+                    id="street"
+                    name="street"
+                    required
+                    autocomplete="street-address"
+                    placeholder="ул..."
+            />
+        </div>
+        <div class="form-group">
+            <label for="city">City</label>
+            <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    required
+                    autocomplete="address-level2"
+                    placeholder="София"
+            />
+        </div>
+        <div class="cf-turnstile" th:attr="data-sitekey=${turnstile.sitekey}"></div>
+        <button type="submit" class="btn submit-btn">Finish Registration</button>
+    </form>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="/js/addresses.js"></script>
+    <script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${google.api_key} + '&libraries=places&callback=initAutocomplete'"
+            async
+            defer></script>
+
+    <script type="module" src="/js/profile-details.js"></script>
+</main>
+</body>
+</html>
