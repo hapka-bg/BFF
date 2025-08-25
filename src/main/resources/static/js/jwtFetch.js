@@ -1,7 +1,7 @@
 // we use fetch again but first we simply check if the token is expired or not
 async function refreshToken() {
     try {
-        const refreshResponse = await fetch('/api/auth/refresh', {
+        const refreshResponse = await fetch('http://localhost:8082/api/auth/refresh', {
             method: 'POST',
             credentials: 'include',  // send cookies (refresh token stored in httpOnly cookie)
             headers: {

@@ -1,0 +1,135 @@
+/* === Reviews Section Styles === */
+
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 0.5rem 1rem;
+    background-color: #e3f2fd;
+    border: none;
+    border-radius: 1rem;
+    color: #1a3c6e;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab-btn.active {
+    background-color: #2a5491;
+    color: white;
+}
+
+.tab-content {
+    padding: 1rem 0;
+}
+
+.analytics-card.clickable {
+    background-color: #f8fbff;
+    border: 1px solid #d6eaf8;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.analytics-card.clickable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.panel {
+    margin-top: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #ccddee;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#roleReviewTable,
+#timeReviewsList,
+#productReviewList {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+#roleReviewTable th,
+#roleReviewTable td {
+    padding: 0.75rem;
+    text-align: left;
+}
+
+#roleReviewTable th {
+    background-color: #e6f0fb;
+}
+
+#roleReviewTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.section-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.section-actions label {
+    font-weight: 600;
+    color: #2a5491;
+}
+
+#timeFilter,
+#sentimentFilter,
+#sortReviews {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #bcd;
+    background-color: #f5faff;
+    font-weight: 500;
+    color: #1a3c6e;
+}
+
+#productReviewList,
+#timeReviewsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.review-card {
+    background-color: #f9fcff;
+    border: 1px solid #d6eaf8;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.review-card .score {
+    font-weight: bold;
+    color: #319795;
+}
+
+.review-card .bad {
+    color: #d9534f;
+}
+
+.stars {
+    color: gold;
+    font-size: 1.2em;
+    margin-top: 4px;
+}
+

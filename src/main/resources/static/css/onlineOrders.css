@@ -1,0 +1,231 @@
+/* === Online Orders Section === */
+/* Lock the root layer */
+html {
+    height: 100%;
+    overflow: hidden;   /* never scrolls, never shows a bar */
+}
+
+/* Real scrolling lives here */
+body {
+    min-height: 100%;
+    overflow-y: auto;   /* single cyan bar */
+}
+
+
+.review-cards-container {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.review-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
+
+.review-card:hover {
+    transform: scale(1.01);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.review-stars {
+    color: #fbbf24; /* gold star color */
+    font-size: 1.1rem;
+}
+
+.review-section {
+    margin-bottom: 0.6rem;
+}
+
+.review-label {
+    font-weight: 600;
+    color: #2a5491;
+    margin-right: 0.3rem;
+}
+
+.review-comment {
+    font-style: italic;
+    color: #555;
+}
+
+/* === Tabs and Filters === */
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 0.5rem 1rem;
+    background-color: #eef6fb;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.tab-btn.active {
+    background-color: #2a5491;
+    color: white;
+    font-weight: bold;
+}
+
+.filters-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+/* === Chart Containers === */
+
+.chart-container {
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+/* ✅ Modal Overlay */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+}
+.modal.hidden {
+    display: none;
+}
+
+/* ✅ Modal Box */
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+
+    height: auto;
+    overflow-y: auto;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    font-family: system-ui, sans-serif;
+    color: #333;
+}
+/* ✅ Close Button */
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+    transition: color 0.2s ease;
+}
+.close-btn:hover {
+    color: #000;
+}
+
+/* ✅ Input Styling */
+.date-input:focus {
+    outline: none;
+    border-color: #63b3ed;
+    box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.3);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+.modal-content h4 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 4px;
+}
+
+.modal-content p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+}
+.modal-content ul {
+    padding-left: 20px;
+    margin-top: 0;
+}
+.modal-content li {
+    line-height: 1.6;
+}
+/* Add this globally */
+body.modal-open {
+    overflow-y: hidden !important;
+}
+
+.tab-content {
+    flex: none;
+    overflow: visible;
+    height: auto;
+}
+
+.table-container {
+    max-height: none;
+    overflow-y: visible;
+}
+
+#online-analytics {
+    padding: 2rem;
+    max-height: none;
+}
+
+#online-orders {
+    padding: 2rem;
+    max-height: none;
+}
+
+.content-area,
+#online-orders,
+#online-analytics,
+#online-orders .tab-content,
+.tabs,
+.filters-row {
+    height: auto !important;
+    overflow: visible !important;
+}
+.content-area {
+    display: block;
+    padding: 2rem;
+}
+.date-input {
+    position: relative;
+    width: 140px;
+    padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1.2em 1.2em;
+    background-image: url('data:image/svg+xml;utf8,\
+    <svg xmlns="http://www.w3.org/2000/svg" fill="%23949ca3" viewBox="0 0 24 24">\
+      <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 \
+      0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 \
+      0 0 2-2V6a2 2 0 0 0-2-2zm0 \
+      16H5V9h14z"/><path d="M7 11h5v5H7z"/></svg>');
+}

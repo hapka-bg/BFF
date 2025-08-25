@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Hapka</title>
+  <link rel="stylesheet" href="./css/admin.css" />
+  <link rel="stylesheet" href="./css/review.css" />
+  <link rel="stylesheet" href="./css/onlineOrders.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+</head>
+
+<body>
+<div class="dashboard">
+  <aside class="sidebar">
+    <h2 class="logo">Hapka</h2>
+    <nav class="sidebar-nav">
+      <button data-section="overview" class="nav-btn active">Dashboard</button>
+      <button data-section="users-staff" class="nav-btn">Users & Staff</button>
+      <button data-section="products" class="nav-btn">Products</button>
+      <button data-section="orders-sales" class="nav-btn">Orders & Sales</button>
+      <button data-section="analytics" class="nav-btn">Analytics</button>
+      <button data-section="reviews" class="nav-btn">Reviews</button>
+      <button data-section="online-orders" class="nav-btn">Online Orders</button>
+    </nav>
+    <button class="logout-btn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="admin-header">
+      <h1 id="section-title">Dashboard</h1>
+    </header>
+
+    <section class="content-area" id="overview">
+
+      <!-- Summary Cards -->
+      <div class="card-grid">
+        <div class="card sales">
+          <div class="card-content">
+            <i class="fas fa-dollar-sign icon"></i>
+            <h3>Total Sales Today</h3>
+            <strong>$1,320</strong>
+          </div>
+        </div>
+        <div class="card orders">
+          <div class="card-content">
+            <i class="fas fa-shopping-cart icon"></i>
+            <h3>Orders Processed</h3>
+            <strong>72</strong>
+          </div>
+        </div>
+        <div class="card staff">
+          <div class="card-content">
+            <i class="fas fa-user-check icon"></i>
+            <h3>Active Staff</h3>
+            <strong>15</strong>
+          </div>
+
+        </div>
+        <div class="card reviews">
+          <div class="card-content">
+            <i class="fas fa-star icon"></i>
+            <h3>New Reviews</h3>
+            <strong>28</strong>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Modules: Top-5 on left, Trend+Heatmap on right -->
+      <div class="module-layout">
+        <div class="left-col">
+          <div class="card top-products-card">
+            <h3>Top 5 Products</h3>
+            <ul id="topProducts" class="product-list"></ul>
+          </div>
+        </div>
+        <div class="right-col">
+          <div class="card sales-trend-card">
+            <h3>Sales Trend</h3>
+            <div id="sparkline-container">
+              <canvas id="salesSparkline"></canvas>
+            </div>
+          </div>
+          <div class="card inventory-card">
+            <h3>Inventory Health</h3>
+            <div class="inventory-wrapper">
+              <table class="heatmap-table" id="inventoryHeatmap">
+                <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>0–10</th>
+                  <th>11–50</th>
+                  <th>51–100</th>
+                  <th>100+</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+    <section class="content-area hidden" id="users-staff">
+      <div class="section-actions">
+        <button class="btn primary" onclick="openAddStaffModal()">Add Staff</button>
+        <input type="text" placeholder="Search by name or role..." id="staffSearch" oninput="filterStaff()" />
+      </div>
+
+      <div class="table-container fade-in">
+        <table class="styled-table" id="staffTable">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Salary</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Jane Doe</td>
+            <td>Waiter</td>
+            <td>jane@hapka.com</td>
+            <td>$1,500</td>
+            <td>
+              <button class="btn small edit-btn" data-user-id="123">Edit</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-area hidden" id="products">
+      <div class="section-actions">
+        <button class="btn primary" onclick="window.location.href='add-product.html'">Add Product</button>
+        <input type="text" id="searchInput" placeholder="Search products..." oninput="filterProducts()" />
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Product cards will be injected here via JS -->
+      </div>
+
+      <div id="snackbar">Product deleted</div>
+    </section>
+
+    <section class="content-area hidden" id="orders-sales">
+      <div class="tabs fade-in">
+        <button class="tab-btn active" data-tab="orders">Orders</button>
+        <button class="tab-btn" data-tab="sales">Sales & Analytics</button>
+      </div>
+
+      <div class="tab-content active" id="orders">
+        <h2>Orders</h2>
+
+        <div class="section-actions">
+          <select id="waiterFilter" name="waiterFilter" class="filter-dropdown">
+            <option value="">Filter by Waiter</option>
+            <option value="Jane Doe">Jane Doe</option>
+            <option value="Mark Smith">Mark Smith</option>
+            <!-- Dynamically populated -->
+          </select>
+
+          <input type="date" id="dateFrom" name="dateFrom" class="filter-input" placeholder="From" />
+          <input type="date" id="dateTo" name="dateTo" class="filter-input" placeholder="To" />
+
+          <button class="btn primary" onclick="fetchOrders()">Apply Filters</button>
+        </div>
+
+        <div class="loading-spinner hidden" id="loading-spinner">
+          <div class="spinner"></div>
+          <span>Loading orders...</span>
+        </div>
+
+        <div class="table-container fade-in">
+          <table class="styled-table">
+            <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Waiter</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+            <tr>
+              <td>#A102</td>
+              <td>Jane Doe</td>
+              <td>2025-07-25</td>
+              <td>$45.00</td>
+              <td><span class="status-badge in-progress">In Progress</span></td>
+            </tr>
+            <!-- More rows dynamically rendered -->
+            </tbody>
+          </table>
+          <div id="no-orders" class="hidden">No orders to display.</div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="sales">
+        <h2>Sales & Analytics</h2>
+        <div class="date-filter-row">
+          <input type="text" id="salesStartDate" class="date-input" placeholder="Start Date" readonly />
+          <input type="text" id="salesEndDate" class="date-input" placeholder="End Date" readonly />
+          <button class="btn primary" id="applySalesFilter">Apply</button>
+        </div>
+        <div class="card-grid">
+          <div class="card" data-metric="revenue">Total Revenue <strong>$4,230</strong></div>
+          <div class="card">Most Ordered Meal <strong>Burger Deluxe</strong></div>
+          <div class="card">Least Ordered <strong>Vegan Salad</strong></div>
+          <div class="card">Average Order Value <strong>$27.50</strong></div>
+        </div>
+        <div class="loading-spinner hidden" id="salesSpinner">
+          <div class="spinner"></div>
+          <span>Loading sales data...</span>
+        </div>
+        <canvas id="salesChart" style="margin-top: 2rem; max-width: 800px;"></canvas>
+      </div>
+    </section>
+
+    <section class="content-area hidden" id="analytics">
+<!--      <div class="analytics-filters">-->
+<!--        <label for="analytics-period">Time Period:</label>-->
+<!--        <select id="analytics-period" name="analytics-period">-->
+<!--          &lt;!&ndash; <option value="today">Today</option> &ndash;&gt;-->
+<!--          <option value="week">This Week</option>-->
+<!--          <option value="month">This Month</option>-->
+<!--          &lt;!&ndash; <option value="custom">Custom</option> &ndash;&gt;-->
+<!--        </select>-->
+<!--      </div>-->
+
+      <div class="analytics-grid fade-in">
+        <div class="analytics-card">
+          <h3>Peak Hours</h3>
+          <canvas id="peakHoursChart"></canvas>
+        </div>
+
+        <div class="analytics-card">
+          <h3>Orders Per Waiter</h3>
+          <canvas id="ordersPerWaiterChart"></canvas>
+        </div>
+
+        <div class="analytics-card">
+          <h3>Popular Categories</h3>
+          <canvas id="popularCategoriesChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-area hidden" id="reviews">
+      <h2>Reviews & Ratings</h2>
+
+      <div class="tabs fade-in">
+        <button class="tab-btn active" data-tab="overall-roles">Role Reviews</button>
+        <button class="tab-btn" data-tab="time-reviews">Time-Based Reviews</button>
+        <button class="tab-btn" data-tab="product-reviews">Product Feedback</button>
+      </div>
+
+      <!-- Overall Role Reviews -->
+      <div class="tab-content" id="overall-roles">
+        <div class="card-grid">
+          <div class="analytics-card clickable" onclick="openRoleDetail('Waiter')">
+            <h3>Waiters</h3>
+            <p>Avg: <strong>4.3</strong> / 5</p>
+            <p>Based on 220 reviews</p>
+          </div>
+          <div class="analytics-card clickable" onclick="openRoleDetail('Bartender')">
+            <h3>Bartenders</h3>
+            <p>Avg: <strong>4.6</strong> / 5</p>
+            <p>Based on 118 reviews</p>
+          </div>
+          <div class="analytics-card clickable" onclick="openRoleDetail('Chef')">
+            <h3>Chefs</h3>
+            <p>Avg: <strong>4.4</strong> / 5</p>
+            <p>Based on 172 reviews</p>
+          </div>
+        </div>
+
+        <div id="roleDetailPanel" class="panel hidden">
+          <div class="panel-header">
+            <h3 id="roleDetailTitle">Role Review Breakdown</h3>
+            <button onclick="closeRoleDetail()" class="btn small danger">Close</button>
+            <select id="sortReviews" onchange="sortRoleReviews()">
+              <option value="desc">Highest Rated</option>
+              <option value="asc">Lowest Rated</option>
+            </select>
+          </div>
+          <table class="styled-table" id="roleReviewTable">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Average Rating</th>
+              <th>Review Count</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- JS will inject list here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Time-Based Reviews -->
+      <div class="tab-content" id="time-reviews">
+        <div class="section-actions">
+          <label for="timeFilter">Select Period:</label>
+          <select id="timeFilter" onchange="filterTimeReviews()">
+            <option value="7days">Last 7 Days</option>
+            <option value="month">This Month</option>
+          </select>
+        </div>
+        <div id="timeReviewsList">
+          <!-- Timeline or list of reviews will be added -->
+        </div>
+      </div>
+
+      <!-- Product-Based Good/Bad Reviews -->
+      <div class="tab-content" id="product-reviews">
+        <div class="section-actions">
+          <label>Filter:</label>
+          <select id="sentimentFilter" onchange="filterProductReviews()">
+            <option value="good">Positive Reviews (4–5)</option>
+            <option value="bad">Negative Reviews (1–2)</option>
+          </select>
+        </div>
+        <div id="productReviewList">
+          <!-- List of reviews by product -->
+        </div>
+      </div>
+    </section>
+
+
+    <section class="content-area hidden" id="online-orders">
+      <div class="tabs fade-in">
+        <button class="tab-btn active" data-tab="ongoing-orders">
+          Ongoing Orders
+        </button>
+        <button class="tab-btn" data-tab="orders-period">
+          Orders by Period
+        </button>
+        <button class="tab-btn" data-tab="online-reviews">
+          Online Order Reviews
+        </button>
+        <button class="tab-btn" data-tab="online-analytics">
+          Analytics
+        </button>
+      </div>
+
+      <!-- 🟢 Ongoing Orders -->
+      <div class="tab-content active" id="ongoing-orders">
+        <h2>Ongoing Online Orders</h2>
+        <div class="table-container">
+          <table class="styled-table">
+            <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Time Placed</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="ongoingOrdersTableBody">
+            <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="noOngoingOrdersMessage" class="empty-state" style="display: none;">
+          <!-- Populated by JS if no orders -->
+        </div>
+      </div>
+
+      <!-- 📅 Orders by Period -->
+      <div class="tab-content" id="orders-period">
+        <h2>Orders for a Time Period</h2>
+        <div class="filters-row">
+          <input type="text" id="orderStartDate" class="date-input" placeholder="From" readonly />
+          <input type="text" id="orderEndDate" class="date-input" placeholder="To" readonly />
+          <button id="filterOrdersBtn" class="btn primary">
+            Filter
+          </button>
+        </div>
+
+        <div class="table-container">
+          <table class="styled-table">
+            <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Delivery Time</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="ordersPeriodTableBody">
+            <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 🌟 Online Order Reviews -->
+      <div class="tab-content" id="online-reviews">
+        <h2>Online Order Reviews</h2>
+
+        <div class="section-actions">
+          <!-- 1. Date range -->
+          <input type="text" id="reviewStartDate" class="filter-input" placeholder="From" readonly />
+          <input type="text" id="reviewEndDate" class="filter-input" placeholder="To" readonly />
+
+          <!-- 2. Minimum star filters -->
+          <select id="minQuality" class="filter-dropdown">
+            <option value="">Min Quality</option>
+            <option value="1">★ and up</option>
+            <option value="2">★★ and up</option>
+            <option value="3">★★★ and up</option>
+            <option value="4">★★★★ and up</option>
+            <option value="5">★★★★★ only</option>
+          </select>
+
+          <select id="minDelivery" class="filter-dropdown">
+            <option value="">Min Delivery</option>
+            <option value="1">★ and up</option>
+            <option value="2">★★ and up</option>
+            <option value="3">★★★ and up</option>
+            <option value="4">★★★★ and up</option>
+            <option value="5">★★★★★ only</option>
+          </select>
+
+          <button class="btn primary" id="applyReviewFilters">Apply Filters</button>
+        </div>
+
+        <div id="onlineReviewsList" class="review-cards-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+
+      <!-- 📊 Analytics -->
+      <div class="tab-content" id="online-analytics">
+        <h2>Online Order Analytics</h2>
+        <div class="chart-container">
+          <canvas id="deliveryTimeVsSatisfactionChart"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="onlineOrdersPerDayChart"></canvas>
+        </div>
+      </div>
+    </section>
+    <div id="orderModal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3>Order Details</h3>
+        <p><strong>Address:</strong> <span id="modalAddress"></span></p>
+        <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
+        <h4>Items:</h4>
+        <ul id="modalItemsList"></ul>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script type="module" src="./js/admin.js"></script>
+<script type="module" src="./js/review.js"></script>
+<script type="module" src="./js/onlineOrders.js"></script>
+<script type="module" src="./js/analytics.js"></script>
+<script type="module" src="./js/products.js"></script>
+<script type="module" src="./js/dashboard.js"></script>
+<script type="module" src="./js/allUsers.js"></script>
+<script type="module" src="./js/salesAndAnalytics.js"></script>
+</body>
+
+</html>
