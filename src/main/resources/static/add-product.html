@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Product - Hapka</title>
+  <link rel="stylesheet" href="/css/admin.css" />
+  <link rel="stylesheet" href="/css/addProduct.css" />
+</head>
+
+<body>
+<div class="form-container fade-in">
+  <h2>Add New Product</h2>
+  <form id="addProductForm">
+    <!-- Product Name -->
+    <label for="productName">Product Name</label>
+    <input type="text" id="productName" name="name" required />
+
+    <!-- Description -->
+    <label for="productDescription">Description</label>
+    <textarea id="productDescription" name="description" rows="3" required></textarea>
+
+    <!-- Price -->
+    <label for="productPrice">Price</label>
+    <input type="number" id="productPrice" name="price" step="0.01" required />
+
+    <!-- Weight in grams -->
+    <label for="productGrams">Weight (grams)</label>
+    <input type="number" id="productGrams" name="grams" min="1" step="1" required />
+
+    <!-- Seasonal toggle -->
+    <span class="toggle-text">Seasonal Product?</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="isSeasonal" name="seasonal" value="true">
+      <span class="slider"></span>
+    </label>
+
+
+
+    <!-- Category dropdown -->
+    <label for="productCategory">Category</label>
+    <select id="productCategory" name="category" required>
+      <option value="burger">Burger</option>
+      <option value="pizza">Pizza</option>
+      <option value="salad">Salad</option>
+      <option value="dessert">Dessert</option>
+      <option value="drink">Drink</option>
+      <option value="other">Other</option>
+    </select>
+
+
+    <!-- Recipe -->
+    <label for="productRecipe">Recipe</label>
+    <textarea id="productRecipe" name="recipe" rows="4" placeholder="Describe the recipe..." required></textarea>
+
+    <!-- Ingredients -->
+    <label for="ingredients">Ingredients</label>
+    <div class="search-wrapper">
+      <input type="text" id="ingredients" placeholder="Type to search..." autocomplete="off">
+      <ul id="ingredientSuggestions" class="product-list"></ul>
+    </div>
+
+    <div id="selectedIngredientsList" class="tags-container"></div>
+
+
+    <!-- Combinable products -->
+    <!-- Header row: label on left, tags on right -->
+    <label for="productSearch">Can be combined with</label>
+
+    <div class="search-wrapper">
+      <input type="text" id="productSearch" placeholder="Search products..." autocomplete="off">
+      <ul id="productList" class="product-list"></ul>
+    </div>
+
+    <!-- Tags BELOW the search -->
+    <div id="selectedProducts" class="tags-container"></div>
+
+    <select id="combinableProducts" multiple hidden></select>
+
+
+    <!-- Product Image -->
+    <label for="fileInput">Product Image</label>
+    <div id="drop-zone">
+      <span>Drag & drop or click to upload</span>
+      <input type="file" id="fileInput" accept="image/*" hidden />
+    </div>
+    <div id="preview" style="display: none;">
+      <img id="previewImage" src="#" alt="Preview" />
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="submit" class="btn primary">Add Product</button>
+      <button type="button" class="btn cancel" onclick="goBack()">Cancel</button>
+    </div>
+  </form>
+
+
+  <div id="snackbar">Product added</div>
+</div>
+
+<script type="module" src="/js/add-product.js"></script>
+</body>
+
+</html>

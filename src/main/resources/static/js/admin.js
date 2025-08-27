@@ -1,11 +1,25 @@
 // ------------------------- Utilities -------------------------
 import {apiFetch} from "./jwtFetch.js";
 
-function $(sel, root = document) { return root.querySelector(sel); }
-function $all(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
-function safe(fn) { try { fn(); } catch (e) { console.error(e); } }
+function $(sel, root = document) {
+    return root.querySelector(sel);
+}
+
+function $all(sel, root = document) {
+    return Array.from(root.querySelectorAll(sel));
+}
+
+function safe(fn) {
+    try {
+        fn();
+    } catch (e) {
+        console.error(e);
+    }
+}
 
 // ------------------------- Orders -------------------------
+let ordersCache = null;
+
 async function fetchOrders() {
     const ordersTableBody = $("#ordersTableBody");
     const loadingSpinner = $("#loading-spinner");
@@ -13,19 +27,20 @@ async function fetchOrders() {
 
     if (!ordersTableBody || !loadingSpinner || !noOrders) return;
 
+    // If we already have cached orders, render them and skip fetch
+    if (ordersCache) {
+        renderOrders(ordersCache, ordersTableBody, noOrders, loadingSpinner);
+        return;
+    }
+
     loadingSpinner.classList.remove("hidden");
     noOrders.classList.add("hidden");
     ordersTableBody.innerHTML = "";
 
     try {
-        // Call your backend endpoint – adjust URL as needed
         const response = await apiFetch("http://localhost:8083/api/v1/orders/all", {
             method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                // Include your JWT if needed:
-                // "Authorization": `Bearer ${localStorage.getItem("token")}`
-            }
+            headers: {"Content-Type": "application/json"}
         });
 
         if (!response.ok) {
@@ -33,29 +48,9 @@ async function fetchOrders() {
         }
 
         const orders = await response.json();
+        ordersCache = orders; // ✅ store in cache
 
-        loadingSpinner.classList.add("hidden");
-
-        if (!orders || orders.length === 0) {
-            noOrders.classList.remove("hidden");
-            return;
-        }
-
-        orders.forEach(order => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${order.orderId}</td>
-                <td>${order.name}</td>
-                <td>${order.orderDate}</td>
-                <td>${order.total}</td>
-                <td>
-                    <span class="status-badge ${order.orderStatus.toLowerCase().replace(/\s+/g, "-")}">
-                        ${order.orderStatus}
-                    </span>
-                </td>
-            `;
-            ordersTableBody.appendChild(tr);
-        });
+        renderOrders(orders, ordersTableBody, noOrders, loadingSpinner);
 
     } catch (error) {
         console.error(error);
@@ -66,21 +61,103 @@ async function fetchOrders() {
 }
 
 
-// ------------------------- Misc placeholders -------------------------
-function openAddStaffModal() { window.location.href = "add-staff.html"; }
-function loadProducts() {}
-function filterStaff() {}
-function filterProducts() {}
+function renderOrders(orders, ordersTableBody, noOrders, loadingSpinner) {
+    loadingSpinner.classList.add("hidden");
+    ordersTableBody.innerHTML = "";
+
+    if (!orders || orders.length === 0) {
+        noOrders.classList.remove("hidden");
+        return;
+    }
+
+    orders.forEach(order => {
+        const tr = document.createElement("tr");
+        const statusClass = getStatusClass(order.orderStatus);
+        tr.innerHTML = `
+            <td>${order.orderId}</td>
+            <td>${order.name}</td>
+            <td>${formatDate(order.orderDate)}</td>
+            <td>${order.total}</td>
+            <td>
+            <span class="status-badge ${statusClass}">
+                ${order.orderStatus}
+            </span>
+        </td>
+        `;
+        ordersTableBody.appendChild(tr);
+    });
+}
+
+function getStatusClass(status) {
+    switch (status) {
+        case "ORDERED":
+        case "PREPARING":
+            return "in-progress";
+        case "SERVED":
+            return "completed";
+        case "CANCELLED":
+            return "cancelled";
+        default:
+            return "";
+    }
+}
+function formatDate(isoString) {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+}
+function filterOrders() {
+    if (!ordersCache) {
+        fetchOrders().then(filterOrders);
+        return;
+    }
+
+    const startDateVal = document.getElementById("dateFrom")?.value;
+    const endDateVal = document.getElementById("dateTo")?.value;
+
+    let start = startDateVal ? new Date(startDateVal) : null;
+    let end = endDateVal ? new Date(endDateVal) : null;
+
+    if (start && isNaN(start)) start = null;
+    if (end && isNaN(end)) end = null;
+
+    if (start && end && start > end) {
+        alert("Invalid date range");
+        return;
+    }
+
+    const toDateOnly = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    if (start) start = toDateOnly(start);
+    if (end) end = toDateOnly(end);
+
+    const filtered = ordersCache.filter(o => {
+        const orderDate = toDateOnly(new Date(o.orderDate));
+        if (start && orderDate < start) return false;
+        if (end && orderDate > end) return false;
+        return true;
+    });
+
+    console.log("Filtered orders:", filtered);
+    renderOrders(filtered, $("#ordersTableBody"), $("#no-orders"), $("#loading-spinner"));
+}
+
 
 // ------------------------- Flatpickr -------------------------
 function initDatePickers() {
     if (typeof flatpickr !== "function") return;
-    safe(() => flatpickr("#salesStartDate", { dateFormat: "Y-m-d", altInput: true, altFormat: "d/m/Y" }));
-    safe(() => flatpickr("#salesEndDate", { dateFormat: "Y-m-d", altInput: true, altFormat: "d/m/Y" }));
-    safe(() => flatpickr("#dateFrom", { dateFormat: "Y-m-d", allowInput: true }));
-    safe(() => flatpickr("#dateTo", { dateFormat: "Y-m-d", allowInput: true }));
+    safe(() => flatpickr("#salesStartDate", {dateFormat: "Y-m-d", altInput: true, altFormat: "d/m/Y"}));
+    safe(() => flatpickr("#salesEndDate", {dateFormat: "Y-m-d", altInput: true, altFormat: "d/m/Y"}));
+    safe(() => flatpickr("#dateFrom", {dateFormat: "Y-m-d", allowInput: true}));
+    safe(() => flatpickr("#dateTo", {dateFormat: "Y-m-d", allowInput: true}));
 }
-
+window.goToAddProduct = function() {
+    window.location.href = 'add-product.html';
+};
 // ------------------------- Orders & Sales tabs -------------------------
 function initOrdersSalesTabs() {
     const section = $("#orders-sales");
@@ -155,4 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
     safe(initSidebarNav);
     safe(initOrdersSalesTabs);
     safe(initDatePickers);
+
+    const applyFiltersBtn = document.getElementById("applyFiltersBtn");
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener("click", filterOrders);
+    }
 });

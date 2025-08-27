@@ -117,8 +117,26 @@ function bindEvents() {
             window.location.href = `${PATHS.edit}?userId=${encodeURIComponent(userId)}`;
         }
     });
-}
 
+    const searchEl = $(SELECTORS.search);
+    if (searchEl) {
+        searchEl.addEventListener('input', () => {
+            const term = searchEl.value.trim().toLowerCase();
+            const filtered = state.users.filter(u => {
+                const user = normalizeUser(u);
+                return (
+                    user.name.toLowerCase().includes(term) ||
+                    user.role.toLowerCase().includes(term)
+                );
+            });
+            renderRows(filtered);
+        });
+    }
+}
+function openAddStaffModal(){
+    window.location.href='add-staff.html';
+}
+window.openAddStaffModal = openAddStaffModal;
 async function init() {
     if (state.initialized) return;
     state.initialized = true;

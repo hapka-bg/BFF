@@ -115,7 +115,7 @@
     <section class="content-area hidden" id="users-staff">
       <div class="section-actions">
         <button class="btn primary" onclick="openAddStaffModal()">Add Staff</button>
-        <input type="text" placeholder="Search by name or role..." id="staffSearch" oninput="filterStaff()" />
+        <input type="text" placeholder="Search by name or role..." id="staffSearch" />
       </div>
 
       <div class="table-container fade-in">
@@ -146,7 +146,7 @@
 
     <section class="content-area hidden" id="products">
       <div class="section-actions">
-        <button class="btn primary" onclick="window.location.href='add-product.html'">Add Product</button>
+        <button id="addProductBtn" class="btn primary" onclick="goToAddProduct()">Add Product</button>
         <input type="text" id="searchInput" placeholder="Search products..." oninput="filterProducts()" />
       </div>
 
@@ -167,23 +167,13 @@
         <h2>Orders</h2>
 
         <div class="section-actions">
-          <select id="waiterFilter" name="waiterFilter" class="filter-dropdown">
-            <option value="">Filter by Waiter</option>
-            <option value="Jane Doe">Jane Doe</option>
-            <option value="Mark Smith">Mark Smith</option>
-            <!-- Dynamically populated -->
-          </select>
-
           <input type="date" id="dateFrom" name="dateFrom" class="filter-input" placeholder="From" />
           <input type="date" id="dateTo" name="dateTo" class="filter-input" placeholder="To" />
 
-          <button class="btn primary" onclick="fetchOrders()">Apply Filters</button>
+          <button id="applyFiltersBtn" class="btn primary">Apply Filters</button>
         </div>
 
-        <div class="loading-spinner hidden" id="loading-spinner">
-          <div class="spinner"></div>
-          <span>Loading orders...</span>
-        </div>
+
 
         <div class="table-container fade-in">
           <table class="styled-table">
@@ -196,6 +186,7 @@
               <th>Status</th>
             </tr>
             </thead>
+
             <tbody id="ordersTableBody">
             <tr>
               <td>#A102</td>
@@ -207,6 +198,10 @@
             <!-- More rows dynamically rendered -->
             </tbody>
           </table>
+          <div class="loading-spinner hidden" id="loading-spinner">
+            <div class="spinner"></div>
+            <span>Loading orders...</span>
+          </div>
           <div id="no-orders" class="hidden">No orders to display.</div>
         </div>
       </div>
@@ -233,15 +228,7 @@
     </section>
 
     <section class="content-area hidden" id="analytics">
-<!--      <div class="analytics-filters">-->
-<!--        <label for="analytics-period">Time Period:</label>-->
-<!--        <select id="analytics-period" name="analytics-period">-->
-<!--          &lt;!&ndash; <option value="today">Today</option> &ndash;&gt;-->
-<!--          <option value="week">This Week</option>-->
-<!--          <option value="month">This Month</option>-->
-<!--          &lt;!&ndash; <option value="custom">Custom</option> &ndash;&gt;-->
-<!--        </select>-->
-<!--      </div>-->
+
 
       <div class="analytics-grid fade-in">
         <div class="analytics-card">

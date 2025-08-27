@@ -1,0 +1,380 @@
+/* ================================
+   PRODUCT SEARCH & LIST
+================================ */
+
+.product-search-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#productSearch {
+    flex: 1;
+    min-width: 120px;
+    border: none;
+    outline: none;
+}
+
+/* Search wrapper */
+.search-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    position: relative; /* for dropdown positioning */
+    flex: 1;
+}
+
+/* Suggestions dropdown */
+.suggestions {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    margin-top: 0.25rem;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    z-index: 10;
+}
+.suggestions div {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+.suggestions div:hover {
+    background-color: #f0f0f0;
+}
+
+/* Product list (dropdown results) */
+#productList,
+.product-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 250px;
+}
+
+.product-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border-top: none;
+    display: none;
+    z-index: 10;
+}
+
+.product-list li,
+#productList li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.product-list li:hover,
+#productList li:hover {
+    background: #f0f8ff;
+}
+#productList li+li {
+    border-top: 1px solid #eee;
+}
+
+/* ================================
+   TAGS & SELECTED PRODUCTS
+================================ */
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    background: #e0f0ff;
+    border: 1px solid #99c;
+    border-radius: 16px;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+.tag span {
+    margin-right: 6px;
+}
+.tag button,
+.tag .remove-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    margin-left: 5px;
+    cursor: pointer;
+    color: #555;
+    line-height: 1;
+}
+.tag button:hover,
+.tag .remove-btn:hover {
+    color: #c00;
+}
+
+.selected-products,
+#selectedProducts,
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+.selected-tags .tag {
+    background-color: #e6f4f3;
+    color: #2a5491;
+    padding: 0.4rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.selected-tags .tag button {
+    font-size: 1rem;
+    color: #888;
+}
+.selected-tags .tag button:hover {
+    color: #d33;
+}
+
+/* ================================
+   FORM ELEMENTS
+================================ */
+
+.form-container select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    background-color: #f9f9f9;
+    transition: border 0.2s ease, background-color 0.2s ease;
+}
+.form-container select:focus {
+    border-color: #319795;
+    outline: none;
+    background-color: #fff;
+}
+.form-container select[multiple] {
+    min-height: 6rem;
+    height: auto;
+    overflow-y: auto;
+}
+
+.form-container fieldset {
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    background-color: #fafafa;
+}
+.form-container fieldset legend {
+    font-weight: 600;
+    color: #2a5491;
+    padding: 0 0.5rem;
+}
+.form-container label+select,
+.form-container label+textarea,
+.form-container label+input {
+    margin-top: 0.25rem;
+}
+
+/* Divider */
+.form-container .section-divider {
+    border-top: 2px dashed #e0e0e0;
+    margin: 2rem 0;
+}
+
+/* ================================
+   TOGGLE SWITCH
+================================ */
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    vertical-align: middle;
+}
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+.slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.toggle-switch input:checked + .slider {
+    background-color: #319795;
+}
+.toggle-switch input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+.toggle-label {
+    font-weight: 600;
+    color: #2a5491;
+    margin-right: 0.75rem;
+}
+
+/* ================================
+   INGREDIENTS
+================================ */
+
+.ingredient-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+}
+.ingredient-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+.ingredient-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+.ingredient-settings label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0.4rem 0;
+    font-size: 0.9rem;
+}
+.ingredient-settings input[type="number"] {
+    width: 70px;
+    margin-left: 0.5rem;
+}
+.ingredient-settings .toggle-switch {
+    width: 40px;
+    height: 22px;
+}
+
+/* ================================
+   ACCORDION
+================================ */
+
+.accordion {
+    margin-top: 1rem;
+    border-top: 1px solid #ddd;
+}
+.accordion-item {
+    border-bottom: 1px solid #ddd;
+}
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: #2a5491;
+}
+.accordion-header span {
+    flex: 1;
+}
+.accordion-header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #666;
+    cursor: pointer;
+}
+.accordion-content {
+    display: none;
+    padding: 0.5rem 0 1rem 0;
+}
+.accordion-content label {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+.accordion-content input[type="number"] {
+    width: 100px;
+}
+.always-included {
+    padding: 0.75rem 0;
+    color: #555;
+    font-style: italic;
+}
+
+/* ================================
+   MISC
+================================ */
+
+.remove-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.remove-btn:hover {
+    color: #e74c3c;
+}
+
+.combination-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+.combination-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.parent-of-selected-products {
+    width: 100%;
+}

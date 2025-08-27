@@ -1,0 +1,160 @@
+body {
+    background: linear-gradient(to bottom right, #d6eaf8, #eef6fb);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 2rem;
+}
+
+.edit-container {
+    max-width: 700px;
+    margin: 0 auto;
+    animation: slideFade 0.6s ease-in-out;
+}
+
+.edit-card {
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.edit-card h2 {
+    color: #1a3c6e;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    color: #2a5491;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.readonly input {
+    background: #f4f4f4;
+    color: #888;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.save-btn {
+    background-color: #319795;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: #81e6d9;
+    color: #04332a;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #2a5491;
+    color: #fff;
+    text-align: center;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    position: fixed;
+    z-index: 1;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbar.show {
+    visibility: visible;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: slideFade 0.4s;
+}
+
+.confirm-delete {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    margin-right: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.cancel-delete {
+    background-color: #319795;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+@keyframes fadein {
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { bottom: 30px; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
+}
+
+@keyframes slideFade {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}

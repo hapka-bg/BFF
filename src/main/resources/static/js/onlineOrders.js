@@ -1,5 +1,6 @@
 // === Mock data for testing ===
 import {apiFetch} from "./jwtFetch.js";
+let reviewsCache = null;
 
 // === Utility: Render stars ===
 function renderStars(rating) {
@@ -59,6 +60,7 @@ async function loadOnlineOrderReviews() {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
         const data = await res.json();
+        reviewsCache = Array.isArray(data) ? data : [];
         renderReviewCards(data);
     } catch (err) {
         console.error("Failed to fetch reviews:", err);
@@ -68,31 +70,41 @@ async function loadOnlineOrderReviews() {
 
 // === Apply review filters ===
 function applyReviewFilters() {
-    const startInput = document.getElementById('reviewStartDate').value;
-    const endInput = document.getElementById('reviewEndDate').value;
+    if (!reviewsCache) {
+        console.warn("No reviews loaded yet — fetching first...");
+        loadOnlineOrderReviews().then(applyReviewFilters);
+        return;
+    }
+    const startPicker = document.querySelector("#reviewStartDate")?._flatpickr;
+    const endPicker = document.querySelector("#reviewEndDate")?._flatpickr;
+    let start = startPicker?.selectedDates[0] || null;
+    let end = endPicker?.selectedDates[0] || null;
+
     const minQ = parseInt(document.getElementById('minQuality').value);
     const minD = parseInt(document.getElementById('minDelivery').value);
 
-    if ((startInput && endInput) && new Date(startInput) > new Date(endInput)) {
+    if (start && end && start > end) {
         alert('Please select a valid date range.');
         return;
     }
 
-    let filtered = mockOnlineReviews.slice();
+    const toDateOnly = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    if (start) start = toDateOnly(start);
+    if (end) end = toDateOnly(end);
 
-    if (startInput) {
-        filtered = filtered.filter(r => new Date(r.reviewDate) >= new Date(startInput));
+    let filtered =[...reviewsCache];
+
+    if (start) {
+        filtered = filtered.filter(r => toDateOnly(new Date(r.reviewDate)) >= start);
     }
-    if (endInput) {
-        const end = new Date(endInput);
-        end.setHours(23, 59, 59, 999);
-        filtered = filtered.filter(r => new Date(r.reviewDate) <= end);
+    if (end) {
+        filtered = filtered.filter(r => toDateOnly(new Date(r.reviewDate)) <= end);
     }
     if (!isNaN(minQ)) {
-        filtered = filtered.filter(r => r.quality >= minQ);
+        filtered = filtered.filter(r => r.qualityReview >= minQ);
     }
     if (!isNaN(minD)) {
-        filtered = filtered.filter(r => r.delivery >= minD);
+        filtered = filtered.filter(r => r.deliveryReview >= minD);
     }
 
     renderReviewCards(filtered);
@@ -416,4 +428,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document
         .getElementById('applyReviewFilters')
         .addEventListener('click', applyReviewFilters);
+
 });
