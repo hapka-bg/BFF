@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Product Details - Hapka</title>
+    <link rel="stylesheet" href="/css/product.css" />
+</head>
+
+<body>
+<main class="container">
+    <!-- <button type="button" class="back-button" onclick="history.back()">← Back</button> -->
+    <a href="javascript:history.back()" class="back-button">
+        <svg viewBox="0 0 24 24" class="back-icon" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round" />
+        </svg>
+        Back
+    </a>
+
+    <section class="product-details">
+
+        <div class="options-section">
+            <div class="description-box">
+                <p class="description-label">Description</p>
+                <p class="product-description">
+                    Succulent grilled chicken seasoned with herbs, served with fresh vegetables and a side of your choice.
+                </p>
+            </div>
+
+            <details class="dropdown-options">
+                <summary>Without</summary>
+                <form id="without-options">
+                    <label>
+                        <input type="checkbox" name="without" value="spices" data-price="0" />
+                        Spices
+                    </label>
+                    <label>
+                        <input type="checkbox" name="without" value="salt" data-price="0" />
+                        Salt
+                    </label>
+                    <label>
+                        <input type="checkbox" name="without" value="sauce" data-price="0" />
+                        Sauce
+                    </label>
+                </form>
+            </details>
+
+            <details class="dropdown-options">
+                <summary>Further</summary>
+                <form id="further-options">
+                    <label>
+                        <input type="checkbox" name="further" value="extra_cheese" data-price="1.50" />
+                        Extra Cheese
+                        <div class="select-wrapper">
+                            <select class="addon-qty" hidden>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+
+                        <span class="price">+$1.50</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="further" value="bacon" data-price="2.00" />
+                        Bacon
+                        <div class="select-wrapper">
+                            <select class="addon-qty" hidden>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <span class="price">+$2.00</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="further" value="avocado" data-price="2.50" />
+                        Avocado
+                        <div class="select-wrapper">
+                            <select class="addon-qty" hidden>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <span class="price">+$2.50</span>
+                    </label>
+                </form>
+            </details>
+        </div>
+
+        <div class="image-section">
+            <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=600&q=80"
+                 alt="Grilled Chicken" class="product-image" loading="lazy" />
+            <h1 class="product-name">Grilled Chicken</h1>
+            <p class="product-weight">500g</p>
+
+            <div class="bottom-row">
+                <div class="final-price-group">
+                    <p class="final-price-label">Final price:</p>
+                    <p class="product-price-end"><strong>$12.50</strong></p>
+                </div>
+                <div class="quantity-wrapper">
+                    <div class="quantity-section">
+                        <button type="button" aria-label="Decrease quantity" id="decrease-qty" class="qty-btn">−</button>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" aria-label="Quantity" readonly />
+                        <button type="button" aria-label="Increase quantity" id="increase-qty" class="qty-btn">+</button>
+                    </div>
+                </div>
+
+                <button type="button" aria-label="Add Grilled Chicken to cart" id="add-to-cart" class="btn add-cart-btn">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <!-- Empty as description moved above -->
+        </div>
+    </section>
+
+    <!-- Recommended products -->
+    <section class="recommended-products-section">
+        <h2 class="recommended-title">Recommended Products</h2>
+        <div class="recommended-products-list"></div>
+    </section>
+
+</main>
+
+<script type="module" src="/js/product.js"></script>
+</body>
+
+</html>

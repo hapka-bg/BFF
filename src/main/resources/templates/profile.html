@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+
+<body>
+<a href="home.html" class="back-btn">← Back to Home</a>
+<div class="profile-container">
+    <div class="tab-buttons">
+        <button class="tab-button active" data-tab="details">Profile Details</button>
+        <button class="tab-button" data-tab="promos">Promo Codes</button>
+        <button class="tab-button" data-tab="orders">Orders</button>
+    </div>
+
+    <div class="tab-content active" id="details-tab" style="display: block;">
+        <div class="profile-field">
+            <label>First Name</label>
+            <span>John</span>
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn" style="display:none;">Save</button>
+            <button class="cancel-btn" style="display:none;">Cancel</button>
+        </div>
+        <div class="profile-field">
+            <label>Last Name</label>
+            <span>Doe</span>
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn" style="display:none;">Save</button>
+            <button class="cancel-btn" style="display:none;">Cancel</button>
+        </div>
+        <div class="profile-field">
+            <label>Email</label>
+            <span>john.doe@example.com</span>
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn" style="display:none;">Save</button>
+            <button class="cancel-btn" style="display:none;">Cancel</button>
+        </div>
+        <div class="profile-field">
+            <label>Phone</label>
+            <span>+1 555 123 4567</span>
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn" style="display:none;">Save</button>
+            <button class="cancel-btn" style="display:none;">Cancel</button>
+        </div>
+        <div class="profile-field">
+            <label>Address</label>
+            <span id="street">123 Main St</span>
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn" style="display:none;">Save</button>
+            <button class="cancel-btn" style="display:none;">Cancel</button>
+        </div>
+        <div class="profile-field">
+            <label>City</label>
+            <span id="city">Cityville</span>
+            <button class="edit-btn">Edit</button>
+            <button class="save-btn" style="display:none;">Save</button>
+            <button class="cancel-btn" style="display:none;">Cancel</button>
+        </div>
+
+        <!-- Change password section -->
+        <div class="profile-field" id="change-password-container">
+            <button id="change-password-btn" class="edit-btn">Change Password</button>
+            <div id="password-fields" style="display:none;">
+                <div class="password-wrapper">
+                    <input type="password" id="old-password" placeholder="Old password" class="password-input" />
+                    <button type="button" class="toggle-password-btn"
+                            aria-label="Toggle old password visibility">👁️</button>
+                </div>
+
+                <div class="password-wrapper">
+                    <input type="password" id="new-password" placeholder="New password" class="password-input" />
+                    <button type="button" class="toggle-password-btn"
+                            aria-label="Toggle new password visibility">👁️</button>
+                </div>
+
+                <div class="password-wrapper">
+                    <input type="password" id="repeat-password" placeholder="Repeat new password"
+                           class="password-input" />
+                    <button type="button" class="toggle-password-btn"
+                            aria-label="Toggle repeat password visibility">👁️</button>
+                </div>
+
+                <button id="password-save-btn" class="save-btn">Save</button>
+                <button id="password-cancel-btn" class="cancel-btn">Cancel</button>
+
+
+            </div>
+
+        </div>
+        <div class="logout-container">
+            <button id="logout-btn" class="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <div class="tab-content" id="promos-tab" style="display: none;">
+        <div id="no-promo-codes-message"
+             style="display: none; text-align: center; margin-top: 20px; color: #275d8a;">
+            You don't have any promo codes yet. Check back later!
+        </div>
+        <div id="promo-codes-list">
+            <!-- promo codes entries -->
+            <table>
+                <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Discount</th>
+                    <th>Min Purchase</th>
+                    <th>Expires</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>SAVE20</td>
+                    <td>20%</td>
+                    <td>$50</td>
+                    <td>2025-12-31</td>
+                </tr>
+                <tr>
+                    <td>FREESHIP</td>
+                    <td>Free Shipping</td>
+                    <td>$30</td>
+                    <td>2025-09-15</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-content" id="orders-tab" style="display: none;">
+        <table>
+            <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Items Count</th>
+                <th>View Items</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-items='["Sushi Roll", "Miso Soup", "Green Tea"]'>
+                <td>#1023</td>
+                <td>2025-06-18</td>
+                <td>$72.45</td>
+                <td>Delivered</td>
+                <td>3</td>
+                <td><button class="view-items-btn">View Items</button></td>
+            </tr>
+            <tr data-items='["Burger", "Fries"]'>
+                <td>#1024</td>
+                <td>2025-07-03</td>
+                <td>$15.00</td>
+                <td>Processing</td>
+                <td>2</td>
+                <td><button class="view-items-btn">View Items</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="items-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6);
+    justify-content:center; align-items:center; z-index:1000;">
+    <div style="background:#fff; padding:20px; border-radius:8px; max-width:400px; width:90%;">
+        <h3>Order Items</h3>
+        <ul id="items-list" style="list-style-type: disc; padding-left: 20px;"></ul>
+        <button id="close-items-modal" style="margin-top: 15px;">Close</button>
+    </div>
+</div>
+<script type="module" src="/js/profile.js"></script>
+<script src="/js/addresses.js"></script>
+<script th:src="'https://maps.googleapis.com/maps/api/js?key=' + ${google.api_key} + '&libraries=places'" async defer ></script>
+
+</body>
+
+</html>

@@ -22,5 +22,11 @@ public class AuthControllers {
         model.addAttribute("google", Map.of("api_key", googleApiKey));
         return "profile-details";
     }
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        model.addAttribute("google", Map.of("api_key", googleApiKey));
+        return "profile";
+    }
+
 }
 

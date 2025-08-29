@@ -1,0 +1,396 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #d6eaf8, #eef6fb);
+    color: #333;
+    padding: 20px;
+}
+
+.profile-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background: #eee;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #555;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover,
+.tab-button:focus {
+    background-color: #81e6d9;
+    color: #04332a;
+    box-shadow: 0 6px 18px rgba(129, 230, 217, 0.5);
+    outline: none;
+}
+
+.tab-button.active {
+    background-color: #319795;
+    color: white;
+    box-shadow: 0 8px 25px rgba(49, 151, 149, 0.7);
+}
+
+.tab-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+    opacity: 1;
+}
+.tab-content.fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.profile-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-field label {
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #275d8a;
+    width: 100px;
+}
+
+.profile-field span,
+.profile-field input.edit-input {
+    padding: 8px 12px;
+    background: #f4faff;
+    border-radius: 8px;
+    border: 1px solid #d0e4f1;
+    color: #1a3c6e;
+    flex-grow: 1;
+    margin-right: 10px;
+    font-size: 1rem;
+    margin-right: 15px;
+    min-width: 200px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #c4d4e7;
+    text-align: left;
+}
+
+th {
+    background-color: #81e6d9;
+    color: #04332a;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    background-color: #81e6d9;
+    color: #04332a;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.back-btn:hover {
+    background-color: #319795;
+    color: #e6f6f5;
+}
+.edit-btn {
+    background-color: #319795;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+    background-color: #275d8a;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.edit-input {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #d0e4f1;
+    background: #f4faff;
+    color: #1a3c6e;
+    font-size: 1rem;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.password-input {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #d0e4f1;
+    background: #f4faff;
+    color: #1a3c6e;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#password-fields button {
+    margin-right: 10px;
+}
+
+.save-btn, .cancel-btn {
+    background-color: #2a5491;  /* nice blue */
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    margin-left: 5px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(50, 100, 150, 0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 0.9rem;
+    min-width: 70px;
+}
+
+/* Cancel button variant */
+.cancel-btn {
+    background-color: #319795; /* teal color */
+    box-shadow: 0 4px 6px rgba(50, 130, 120, 0.3);
+}
+
+.save-btn:hover {
+    background-color: #1a3c6e; /* darker blue */
+    box-shadow: 0 6px 8px rgba(20, 60, 110, 0.5);
+}
+
+.cancel-btn:hover {
+    background-color: #2c7a7b; /* darker teal */
+    box-shadow: 0 6px 8px rgba(40, 120, 115, 0.5);
+}
+
+#change-password-btn {
+    background-color: #2a5491;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(50, 100, 150, 0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* Hover on change password button */
+#change-password-btn:hover {
+    background-color: #1a3c6e;
+    box-shadow: 0 6px 8px rgba(20, 60, 110, 0.5);
+}
+
+/* Password inputs */
+#password-fields input.password-input {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border: 1px solid #d0e4f1;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1a3c6e;
+    background-color: #f4faff;
+}
+
+#password-fields {
+    display: flex;
+    flex-direction: column; /* stack vertically */
+    gap: 15px; /* space between each input+toggle group */
+    max-width: 300px; /* optional, to keep inputs not too wide */
+    margin-left: 20%;
+}
+#change-password-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* optional: change to center if you want everything centered */
+    gap: 20px; /* adds spacing between "Change Password" and the password fields */
+
+}
+
+
+.password-input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #d0e4f1;
+    color: #1a3c6e;
+    width: 100%; /* full width inside wrapper */
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-password-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 8px;
+    color: #275d8a;
+    font-size: 16px;
+    user-select: none;
+}
+
+#items-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(26, 60, 110, 0.8); /* semi-transparent overlay using your main brand color */
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#items-modal > div {
+    background: #eef6fb; /* light background gradient color */
+    padding: 25px 30px;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    color: #1a3c6e; /* dark main brand color for text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+#items-modal h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    font-weight: 700;
+    font-size: 1.6rem;
+}
+
+#items-list {
+    list-style-type: disc;
+    padding-left: 24px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    text-align: left;
+    color: #275d8a;
+    font-size: 1rem;
+}
+
+#items-list li {
+    margin-bottom: 8px;
+}
+
+#close-items-modal {
+    padding: 8px 24px;
+    background-color: #319795; /* teal-ish button */
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+#close-items-modal:hover {
+    background-color: #2a5491; /* darker blue on hover */
+}
+
+
+.view-items-btn {
+    background-color: #319795; /* teal-ish */
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 0.9rem;
+}
+
+.view-items-btn:hover {
+    background-color: #2a5491; /* darker blue on hover */
+}
+
+.view-items-btn:focus {
+    outline: 2px solid #81e6d9; /* subtle teal focus ring */
+    outline-offset: 2px;
+}
+
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.logout-btn {
+    background-color: #cc3b3b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.logout-btn:hover {
+    background-color: #a32727;
+}
+
+

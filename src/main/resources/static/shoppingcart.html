@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/css/shopping-cart.css" />
+</head>
+<body>
+<div class="container">
+    <a href="home.html" id="backBtn" class="back-btn">← Back</a>
+
+    <h1>Your Shopping Cart</h1>
+
+    <div id="cartItems" class="cart-items">
+        <!-- Products will be injected here -->
+    </div>
+
+
+    <div id="cartExtras">
+        <div class="extra-items">
+            <label class="checkbox-label">
+                <input type="checkbox" id="cutleryNapkinsChk" />
+                Cutlery / Napkins
+            </label>
+
+            <label class="checkbox-label">
+                <input type="checkbox" id="sushiSticksChk" />
+                Sushi sticks
+            </label>
+            <select id="sushiSticksCount" class="hidden">
+                <option value="0" selected disabled>Choose sets</option>
+                <option value="1">1 set + $0.10</option>
+                <option value="2">2 sets + $0.20</option>
+                <option value="3">3 sets + $0.30</option>
+                <option value="4">4 sets + $0.40</option>
+                <option value="5">5 sets + $0.50</option>
+            </select>
+        </div>
+
+        <div class="promo-code">
+            <label>
+                Promo Code:
+                <input type="text" id="promoCode" placeholder="Enter promo code" />
+            </label>
+            <button id="applyPromoBtn">Apply</button>
+            <span id="promoMessage" class="promo-message"></span>
+        </div>
+
+        <div class="summary">
+            <div>
+                <span>Delivery Fee:</span>
+                <span id="deliveryFee" class="delivery-fee-value">$5.00</span>
+            </div>
+            <div class="total">
+                <span>Total:</span>
+                <span id="totalPrice">$0.00</span>
+            </div>
+        </div>
+
+        <div class="cart-actions">
+            <button id="clearCartBtn" class="btn-clear">Clear Cart</button>
+            <button id="addItemBtn" class="btn-add">Add Item</button>
+            <button id="checkoutBtn" class="btn-order">Order Now</button>
+        </div>
+    </div>
+</div>
+<script type="module" src="/js/shopping-cart.js"></script>
+</body>
+</html>
