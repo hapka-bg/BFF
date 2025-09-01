@@ -83,7 +83,6 @@ body {
     border: 1px solid #d0e4f1;
     color: #1a3c6e;
     flex-grow: 1;
-    margin-right: 10px;
     font-size: 1rem;
     margin-right: 15px;
     min-width: 200px;
@@ -392,5 +391,3 @@ th {
 .logout-btn:hover {
     background-color: #a32727;
 }
-
-

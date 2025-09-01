@@ -9,10 +9,6 @@ const SELECTORS = {
     navBtn: '.nav-btn[data-section="users-staff"]',
 };
 
-const PATHS = {
-    edit: 'edit-user.html',
-};
-
 const state = {
     users: [],
     initialized: false,
@@ -114,7 +110,7 @@ function bindEvents() {
         if (!btn) return;
         const userId = btn.dataset.userId;
         if (userId) {
-            window.location.href = `${PATHS.edit}?userId=${encodeURIComponent(userId)}`;
+            window.location.href = `add-staff.html?userId=${userId}`;
         }
     });
 
@@ -155,12 +151,17 @@ async function init() {
 
 // Wait for DOM, then bind nav button click
 document.addEventListener('DOMContentLoaded', () => {
+    bindEvents();
     const navBtn = $(SELECTORS.navBtn);
     if (navBtn) {
         navBtn.addEventListener('click', () => {
             const section = $(SELECTORS.section);
             if (section) init();
         });
+    }
+    const section = $(SELECTORS.section);
+    if (section && !section.classList.contains('hidden')) {
+        init();
     }
 });
 

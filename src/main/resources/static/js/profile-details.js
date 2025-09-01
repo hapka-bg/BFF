@@ -48,7 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 const data = await response.json();
-                localStorage.setItem("jwt_token", data.jwt); // Store final JWT
+                if (data.accessToken) {// Store final JWT
+                    localStorage.setItem("jwt_token", data.accessToken);
+                }
+                if (data.role) {
+                    localStorage.setItem("user_role", data.role);
+                }
                 localStorage.removeItem("user_registration_data"); // Clean up
 
                 window.location.href = "home.html";

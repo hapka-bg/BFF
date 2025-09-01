@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="module" src="/js/auth-guard.js"></script>
+
   <title>Add Product - Hapka</title>
   <link rel="stylesheet" href="/css/admin.css" />
   <link rel="stylesheet" href="/css/addProduct.css" />
@@ -92,7 +94,7 @@
     <!-- Actions -->
     <div class="form-actions">
       <button type="submit" class="btn primary">Add Product</button>
-      <button type="button" class="btn cancel" onclick="goBack()">Cancel</button>
+      <button type="button" class="btn cancel" id="cancel-btn">Cancel</button>
     </div>
   </form>
 

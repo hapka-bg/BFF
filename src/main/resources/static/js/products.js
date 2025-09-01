@@ -1,8 +1,9 @@
 // products.js
- import { apiFetch } from "./jwtFetch.js";
+import { apiFetch } from "./jwtFetch.js";
 
 const PRODUCTS_ENDPOINT = 'http://localhost:8083/api/v1/products/all';
 let productsCache = null;
+let productIdToDelete = null;
 
 // --- Utilities ---
 function formatPrice(price, currencySymbol = '$') {
@@ -19,6 +20,7 @@ function showSnackbar(message) {
     setTimeout(() => snackbar.classList.remove('show'), 3000);
 }
 
+// --- Rendering ---
 function renderProducts(products) {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
@@ -52,7 +54,7 @@ function renderProducts(products) {
         editBtn.addEventListener('click', () => editProduct(id));
 
         const deleteBtn = card.querySelector('.delete-btn');
-        deleteBtn.addEventListener('click', () => deleteProduct(id));
+        deleteBtn.addEventListener('click', () => confirmDelete(id));
 
         grid.appendChild(card);
     });
@@ -99,17 +101,23 @@ async function loadProducts({ force = false } = {}) {
 // --- Actions ---
 function editProduct(productId) {
     if (!productId) return;
-    window.location.href = `edit-product.html?productId=${encodeURIComponent(productId)}`;
+    window.location.href = `add-product.html?productId=${encodeURIComponent(productId)}`;
 }
 
-async function deleteProduct(productId) {
+function confirmDelete(productId) {
     if (!productId) {
         showSnackbar('Missing product id');
         return;
     }
+    productIdToDelete = productId;
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+async function performDelete() {
+    if (!productIdToDelete) return;
 
     try {
-        const res = await fetch(`${PRODUCTS_ENDPOINT}/${encodeURIComponent(productId)}`, {
+        const res = await fetch(`http://localhost:8083/api/v1/products/${encodeURIComponent(productIdToDelete)}`, {
             method: 'DELETE',
             headers: { 'Accept': 'application/json' }
         });
@@ -119,8 +127,9 @@ async function deleteProduct(productId) {
             throw new Error(`Delete failed: ${res.status} ${text}`);
         }
 
+        // Remove from cache and re-render
         if (Array.isArray(productsCache)) {
-            productsCache = productsCache.filter(p => p.id !== productId);
+            productsCache = productsCache.filter(p => p.id !== productIdToDelete);
             renderProducts(productsCache);
         } else {
             await loadProducts({ force: true });
@@ -130,6 +139,9 @@ async function deleteProduct(productId) {
     } catch (err) {
         console.error(err);
         showSnackbar('Failed to delete product');
+    } finally {
+        document.getElementById('deleteModal').style.display = 'none';
+        productIdToDelete = null;
     }
 }
 
@@ -142,13 +154,31 @@ function filterProducts() {
     });
 }
 
-// --- Auto-load ---
+// --- Auto-load & modal listeners ---
 document.addEventListener('DOMContentLoaded', () => {
     const productsSection = document.getElementById('products');
     if (!productsSection) return;
 
+    // Modal buttons
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            productIdToDelete = null;
+        });
+    }
+
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', performDelete);
+    }
+
+    // Initial load
     if (!productsSection.classList.contains('hidden')) loadProducts();
 
+    // Reload when section becomes visible
     new MutationObserver(mutations => {
         for (const m of mutations) {
             if (m.attributeName === "class" && !productsSection.classList.contains('hidden')) {
@@ -161,5 +191,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Expose globally ---
 window.loadProducts = loadProducts;
 window.editProduct = editProduct;
-window.deleteProduct = deleteProduct;
+window.confirmDelete = confirmDelete;
 window.filterProducts = filterProducts;

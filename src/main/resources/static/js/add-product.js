@@ -71,6 +71,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         handleFiles(fileInput.files);
     });
 
+    const cancelBtn = document.getElementById('cancel-btn');
+    cancelBtn.addEventListener('click', () => {
+        window.history.back();
+    })
     function handleFiles(files) {
         const file = files[0];
         if (!file || !file.type.startsWith('image/')) {
@@ -196,13 +200,99 @@ document.addEventListener("DOMContentLoaded", async function () {
             suggestionsBox.style.display = 'none';
         }
     });
+    const urlParams = new URLSearchParams(window.location.search);
+    const editProductId = urlParams.get('productId');
 
+    if (editProductId) {
+        try {
+            // Fetch the product to edit
+            const res = await apiFetch(`http://localhost:8083/api/v1/products/${encodeURIComponent(editProductId)}`);
+            if (!res.ok) throw new Error(`Failed to fetch product ${editProductId}`);
+            const product = await res.json();
+
+            // Prefill basic fields (match backend property names)
+            document.getElementById('productName').value = product.name || '';
+            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productPrice').value = product.price ?? '';
+            document.getElementById('productGrams').value = product.weight ?? ''; // weight instead of grams
+            document.getElementById('isSeasonal').checked = !!product.seasonal; // if seasonal exists
+            document.getElementById('productCategory').value = product.category?.toLowerCase() || '';
+            document.getElementById('productRecipe').value = product.recipe || '';
+
+            // Prefill image preview (backend sends 'image')
+            if (product.image) {
+                previewImage.src = product.image.startsWith('http') ? product.image : `http://localhost:8083/${product.image}`;
+                preview.style.display = 'block';
+                dropText.style.display = 'none';
+            }
+
+            // Prefill ingredients from 'customizations'
+            if (Array.isArray(product.customizations)) {
+                selectedIngredients = product.customizations.map(cust => ({
+                    id: cust.ingredient.id,
+                    name: cust.ingredient.name,
+                    permanent: !cust.addable && !cust.removable, // guess: permanent if neither addable nor removable
+                    canBeAdded: !!cust.addable,
+                    canBeRemoved: !!cust.removable,
+                    extraCost: parseFloat(cust.extraCost) || 0,
+                    maxQty: parseInt(cust.maxQuantity) || 1
+                }));
+                renderSelected();
+            }
+
+            // Prefill recommended products
+            if (Array.isArray(product.recommended)) {
+                product.recommended.forEach(rec => {
+                    const prod = cache.products.find(p => String(p.id) === String(rec.id));
+                    if (prod) {
+                        addTag(prod);
+                    } else {
+                        // If not in cache, create a temporary product object
+                        addTag({ id: rec.id, name: rec.name });
+                    }
+                });
+            }
+
+            // Change form title/button for edit mode
+            const titleEl = document.querySelector('#formTitle');
+            if (titleEl) titleEl.textContent = 'Edit Product';
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.textContent = 'Update Product';
+
+            // Override submit for update
+            form.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                try {
+                    const productData = getProductData();
+                    const res = await apiFetch(`http://localhost:8083/api/v1/products/${encodeURIComponent(editProductId)}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(productData)
+                    });
+                    if (!res.ok) {
+                        const text = await res.text();
+                        throw new Error(`Update failed: ${res.status} ${text}`);
+                    }
+                    showSnackbar("Product updated successfully");
+                    setTimeout(() => {
+                        window.location.href = "admin.html";
+                    }, 1500);
+                } catch (err) {
+                    console.error("Failed to update product:", err);
+                    showSnackbar("Failed to update product");
+                }
+            }, { once: true });
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     function addTag(product) {
         if ([...selectElement.selectedOptions].some(o => o.value == product.id)) return;
         let opt = [...selectElement.options].find(o => o.value == product.id);
         if (!opt) {
-            opt = new Option(product.name, product.id, true, true); // text, value, defaultSelected, selected
+            opt = new Option(product.name, product.id, true, true);
             selectElement.add(opt);
         }
         else {
@@ -228,6 +318,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         productList.style.display = 'none';
     }
     function getProductData() {
+        let imageData = null;
+
+        if (previewImage.src && previewImage.src.startsWith('data:image')) {
+            // New upload: strip the prefix and send only the Base64 part
+            imageData = previewImage.src.split(',')[1];
+        } else {
+            // Existing image URL or no image: send null so backend doesn't re-upload
+            imageData = null;
+        }
+
         return {
             name: form.name.value.trim(),
             description: form.description.value.trim(),
@@ -245,7 +345,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 maxQty: i.maxQty
             })),
             combinableProducts: [...selectElement.selectedOptions].map(o => o.value),
-            image: previewImage.src || null
+            image: imageData
         };
     }
     async function postProduct(productData) {
@@ -277,7 +377,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         } catch (err) {
             console.error("Failed to add product:", err);
-            alert("Failed to add product. Please try again.");
         }
     });
 
@@ -287,7 +386,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         snackbar.classList.add("show");
         setTimeout(() => snackbar.classList.remove("show"), 3000);
     }
-
 
     function renderMatches(items, container, onClick) {
         container.innerHTML = '';
@@ -323,10 +421,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
     }
 
-
     function makeNumber(label, obj, key, step) {
         const inp = el("input", { type: "number", step, value: obj[key], onchange: e => obj[key] = parseFloat(e.target.value) || 0 });
         return el("label", {}, el("span", { textContent: label }), inp);
     }
+
 });
 
