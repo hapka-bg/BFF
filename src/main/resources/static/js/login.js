@@ -1,18 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('login-form');
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const usernameError = document.getElementById("username-error");
+    const passwordError = document.getElementById("password-error");
 
-
-    const form=document.getElementById('login-form');
     form.addEventListener('submit', async (event) => {
-        console.log("Form Submitted");
         event.preventDefault();
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
+        usernameError.textContent = "";
+        passwordError.textContent = "";
 
-        if (!username || !password) {
-            //todo change the alert in a red text below the fields
-            alert("Please enter both username and password");
-            return;
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+        let hasError = false;
+        if(!username){
+            usernameError.textContent = "Username cannot be empty";
+            hasError = true;
         }
+        if (!password) {
+            passwordError.textContent = "Password cannot be empty";
+            hasError = true;
+        }
+        if (hasError) return;
+
 
         try {
             console.log("Sending request");
@@ -24,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             console.log("Request send");
             if (!res.ok) {
-                const text = await res.text();
-                throw new Error(`Login failed: ${res.status} ${text}`);
+                passwordError.textContent = "Invalid username or password";
+                return;
             }
             const data = await res.json();
             localStorage.setItem("jwt_token", data.accessToken);
@@ -41,9 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = "index.html";
             }
         } catch (err) {
-            //todo same here
+            passwordError.textContent = "Something went wrong. Please try again.";
             console.error(err);
-            alert("Invalid username or password");
         }
     })
 

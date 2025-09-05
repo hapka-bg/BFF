@@ -32,6 +32,7 @@
                     autocomplete="street-address"
                     placeholder="ул..."
             />
+            <span class="error-message" id="street-error"></span>
         </div>
         <div class="form-group">
             <label for="city">City</label>
@@ -43,6 +44,7 @@
                     autocomplete="address-level2"
                     placeholder="София"
             />
+            <span class="error-message" id="city-error"></span>
         </div>
         <div class="cf-turnstile" th:attr="data-sitekey=${turnstile.sitekey}"></div>
         <button type="submit" class="btn submit-btn">Finish Registration</button>

@@ -136,3 +136,10 @@ input:focus {
     box-shadow: 0 8px 25px rgba(85, 153, 255, 0.6);
     outline: none;
 }
+
+.error-message {
+    color: red;
+    font-size: 0.85em;
+    margin-top: 4px;
+    display: block;
+}

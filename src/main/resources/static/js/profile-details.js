@@ -1,32 +1,47 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     const detailsForm = document.getElementById("details-form");
+
+    const streetInput = document.getElementById("street");
+    const cityInput = document.getElementById("city");
+    const streetError = document.getElementById("street-error");
+    const cityError = document.getElementById("city-error");
+    const captchaError = document.getElementById("captcha-error");
 
     if (detailsForm) {
         detailsForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-
+            streetError.textContent = "";
+            cityError.textContent = "";
+            captchaError.textContent = "";
             // Turnstile
             const tokenInput = document.querySelector("input[name='cf-turnstile-response']");
             const turnstileToken = tokenInput?.value;
+            let hasError=false;
             if (!turnstileToken) {
-                alert("Please complete the CAPTCHA.");
-                return;
+                captchaError.textContent = "Please complete the CAPTCHA.";
+                hasError = true;
             }
-
+            if (!streetInput.value.trim()) {
+                streetError.textContent = "Street address cannot be empty";
+                hasError = true;
+            }
+            if (!cityInput.value.trim()) {
+                cityError.textContent = "City cannot be empty";
+                hasError = true;
+            }
+            if (hasError) return;
             // Get initial registration data from localStorage
             const initialData = JSON.parse(localStorage.getItem("user_registration_data") || "{}");
 
             if (!initialData.email || !initialData.password) {
-                alert("Missing registration data. Please register again.");
                 window.location.href = "/register";
                 return;
             }
 
             const fullData = {
                 ...initialData,
-                street: document.getElementById("street").value,
-                city: document.getElementById("city").value,
+                street: streetInput.value.trim(),
+                city: cityInput.value.trim(),
                 turnstileToken: turnstileToken,
             };
 
@@ -43,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (!response.ok) {
                     const error = await response.json();
-                    alert("Registration failed: " + (error.message || response.statusText));
+                    captchaError.textContent = error.message || "Registration failed";
                     return;
                 }
 
@@ -59,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href = "home.html";
 
             } catch (err) {
-                alert("Error completing registration: " + err.message);
+                captchaError.textContent = "Error completing registration. Please try again.";
                 window.turnstile.reset();
             }
         });

@@ -117,3 +117,9 @@ input:focus {
     margin-bottom: 20px;
     display: block; /* ensures it behaves like a block element */
 }
+.error-message {
+    color: red;
+    font-size: 0.85em;
+    margin-top: 4px;
+    display: block;
+}
